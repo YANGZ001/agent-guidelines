@@ -15,6 +15,7 @@ if [[ ! -f "$COMMON_RULES_FILE" ]]; then
   exit 1
 fi
 
+# Step 1: Fetch Karpathy guidelines and update target AGENTS.md
 echo "Fetching Karpathy guidelines from GitHub..."
 KARPATHY_CONTENT=$(curl -fsSL "$KARPATHY_URL") || {
   echo "Error: failed to fetch Karpathy guidelines from $KARPATHY_URL" >&2
@@ -49,7 +50,7 @@ else
   echo "Updated $TARGET_FILE (appended block)"
 fi
 
-# Ensure CLAUDE.md exists and contains only "@AGENTS.md"
+# Ensure CLAUDE.md exists and references AGENTS.md
 CLAUDE_FILE="$TARGET_DIR/CLAUDE.md"
 if [[ ! -f "$CLAUDE_FILE" ]]; then
   echo "@AGENTS.md" > "$CLAUDE_FILE"
@@ -61,5 +62,14 @@ else
     echo "Migrate all content from CLAUDE.md to AGENTS.md, then replace CLAUDE.md with a single line: @AGENTS.md" >&2
     exit 1
   fi
-  echo "$CLAUDE_FILE already contains only @AGENTS.md, skipping"
+  echo "$CLAUDE_FILE already references AGENTS.md, skipping"
 fi
+
+# Step 2 (from sync-external-repos.sh): Pull .claude/ if it is a git repo
+CLAUDE_DIR="$TARGET_DIR/.claude"
+if [[ -d "$CLAUDE_DIR/.git" ]]; then
+  echo "Updating .claude (official skills)..."
+  git -C "$CLAUDE_DIR" pull --ff-only
+fi
+
+echo "Done."
