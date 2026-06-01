@@ -48,3 +48,15 @@ else
   { printf '\n'; cat "$BLOCK_FILE"; } >> "$TARGET_FILE"
   echo "Updated $TARGET_FILE (appended block)"
 fi
+
+# Ensure CLAUDE.md exists and references AGENTS.md
+CLAUDE_FILE="$TARGET_DIR/CLAUDE.md"
+if [[ ! -f "$CLAUDE_FILE" ]]; then
+  echo "@AGENTS.md" > "$CLAUDE_FILE"
+  echo "Created $CLAUDE_FILE"
+elif ! grep -qF "@AGENTS.md" "$CLAUDE_FILE"; then
+  echo "@AGENTS.md" >> "$CLAUDE_FILE"
+  echo "Updated $CLAUDE_FILE (appended @AGENTS.md reference)"
+else
+  echo "$CLAUDE_FILE already references AGENTS.md, skipping"
+fi
