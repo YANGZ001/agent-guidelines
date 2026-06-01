@@ -69,7 +69,8 @@ fi
 CLAUDE_DIR="$TARGET_DIR/.claude"
 if [[ -d "$CLAUDE_DIR/.git" ]]; then
   echo "Updating .claude (official skills)..."
-  git -C "$CLAUDE_DIR" pull --ff-only
+  git -C "$CLAUDE_DIR" pull --ff-only || \
+    echo "Warning: failed to update .claude — skipping (check git status in $CLAUDE_DIR)" >&2
 fi
 
 echo "Done."
