@@ -13,7 +13,7 @@ cd /path/to/my-project
 ./agent-guidelines/scripts/update_guidelines.sh /path/to/my-project
 ```
 
-The script fetches the latest [Karpathy guidelines](https://github.com/multica-ai/andrej-karpathy-skills) from GitHub, combines them with your common rules, and writes the result into the project's `AGENTS.md`. Idempotent — safe to re-run.
+The script fetches the latest [Karpathy guidelines](https://github.com/multica-ai/andrej-karpathy-skills) from GitHub, combines them with your common rules, and writes the result into the project's `AGENTS.md`. If `TARGET_DIR/.claude/` is a git repository, it also pulls the latest official skills. Idempotent — safe to re-run.
 
 ## Setup for a new machine
 
