@@ -49,14 +49,17 @@ else
   echo "Updated $TARGET_FILE (appended block)"
 fi
 
-# Ensure CLAUDE.md exists and references AGENTS.md
+# Ensure CLAUDE.md exists and contains only "@AGENTS.md"
 CLAUDE_FILE="$TARGET_DIR/CLAUDE.md"
 if [[ ! -f "$CLAUDE_FILE" ]]; then
   echo "@AGENTS.md" > "$CLAUDE_FILE"
   echo "Created $CLAUDE_FILE"
-elif ! grep -qF "@AGENTS.md" "$CLAUDE_FILE"; then
-  echo "@AGENTS.md" >> "$CLAUDE_FILE"
-  echo "Updated $CLAUDE_FILE (appended @AGENTS.md reference)"
 else
-  echo "$CLAUDE_FILE already references AGENTS.md, skipping"
+  claude_content=$(tr -d '[:space:]' < "$CLAUDE_FILE")
+  if [[ "$claude_content" != "@AGENTS.md" ]]; then
+    echo "ERROR: $CLAUDE_FILE must contain only '@AGENTS.md'." >&2
+    echo "Migrate all content from CLAUDE.md to AGENTS.md, then replace CLAUDE.md with a single line: @AGENTS.md" >&2
+    exit 1
+  fi
+  echo "$CLAUDE_FILE already contains only @AGENTS.md, skipping"
 fi
