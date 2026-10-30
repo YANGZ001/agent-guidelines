@@ -1,13 +1,5 @@
 # Common Agent Rules
 
-## Feature Development Workflow
-
-All new features use [OpenSpec](https://github.com/Fission-AI/OpenSpec). Before writing any code, run `/opsx:propose` to kick off the design phase.
-
-Legacy feature docs live under `repo_root/docs/<feature-name>/` and are kept for reference only — do not create new ones there.
-
----
-
 ## Decision Ownership
 
 Surface key decisions to the user before acting on them. Do not resolve significant design or scope choices unilaterally.
